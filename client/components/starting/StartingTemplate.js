@@ -7,7 +7,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import SignUpPanel from './SignUpPanel';
 import LoginPanel from './LoginPanel';
-import {getFacebookUrl} from '../../action/auth/auth';
+import {getFacebookUrl, startLogin, startSignUp, getGoogleUrl} from '../../action/auth/auth';
+import {connect} from 'react-redux';
 
 const facebookUrl = getFacebookUrl();
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StartPage = () => {
+const StartPage = (props) => {
   const classes = useStyles();
   const [panel, SetPanel] = useState(true);
 
@@ -50,10 +51,14 @@ const StartPage = () => {
           {panel 
            ? <LoginPanel
                facebookUrl = {facebookUrl}
+               login = {props.startLogin}
+               getGoogleUrl = {getGoogleUrl}
                toSignUp = {() => SetPanel(false)}
              /> 
            : <SignUpPanel
                facebookUrl = {facebookUrl}
+               signup = {props.startSignUp}
+               getGoogleUrl = {getGoogleUrl}
                toLogin = {() => SetPanel(true)}
              />
           }
@@ -62,4 +67,7 @@ const StartPage = () => {
     </Grid>
   );
 }
-export default StartPage;
+const mapDispatchToProps = {
+  startLogin, startSignUp
+}
+export default connect(null, mapDispatchToProps)(StartPage);

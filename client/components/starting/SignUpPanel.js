@@ -7,7 +7,6 @@ import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import Copyright from '../common/Copyright';
 import Typography from '@material-ui/core/Typography';
-import Axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -24,24 +23,14 @@ const SignUpPanel = (props) => {
   const [googleUrl, setGoogleUrl] = useState('#');
   const [error, setError] = useState(null);
   useEffect(() => {
-    Axios.get('/google/url').then((res) => {
-      setGoogleUrl(res.data);
-    })
-  }, [])
+    props.getGoogleUrl().then((url) => setGoogleUrl(url))
+  }, []);
   const handleSubmitSignUp = (e) => {
     e.preventDefault();
     const name = e.target.elements.fname.value.trim() + ' ' + e.target.elements.lname.value.trim();
     const password = e.target.elements.password.value.trim();
     const email = e.target.elements.email.value.trim();
-    Axios.post('/api/users/signup', {name, password, email})
-    .then((res) => {
-      console.log(res.data);
-    })   
-    .catch((e) => {
-      console.log(e);
-      const error = e.response && e.response.data && e.response.data.error;
-      setError(error || e.response.statusText);
-    });
+    props.signup({email, password, name}, setError);
   }  
   return (
       <>
@@ -130,7 +119,7 @@ const SignUpPanel = (props) => {
           </Typography>}
           <Grid container justify="flex-end">
             <Grid item>
-              <Link onClick = {props.toLogin} variant="body2">
+              <Link onClick = {() => props.toLogin()} variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

@@ -43,42 +43,34 @@ router.post('/api/users/login', async(req, res) => {
         res.status(400).send(error)
     }
 })
-router.get('/api/users/loginGoogle', async(req, res) => {
-    if (req.query.error) {
-        // The user did not give us permission.
-        return res.redirect('/');
-      } else {
-        const {email, password, name} = await getGoogleAccountFromCode(req.query.code);
+router.post('/api/users/loginGoogle', async(req, res) => {
+    if (req.body.code) {
+        const {email, password, name} = await getGoogleAccountFromCode(req.body.code);
         try {
             const find = await User.findOne({email});
             if(find) {
-                const token = await user.generateAuthToken();
-                res.status(201).send({ user, token })
+                const token = await find.generateAuthToken();
+                res.status(201).send({ user:find, token })
             } else {
                 const user = new User({email, password, name});
                 await user.save()
                 const token = await user.generateAuthToken();
                 res.send({ user, token });
-
             }
-
         } 
         catch (error) {
             res.status(400).send(error)
         }
-      }
+    }
 })
-router.get('/api/users/loginFB', async(req, res) => {
-    if (req.query.error) {
-        // The user did not give us permission.
-        return res.redirect('/');
-      } else {
-        const {email, password, name} = await getFacebookUserData(req.query.code);
+router.post('/api/users/loginFB', async(req, res) => {
+    if (req.body.code) { 
+        const {email, password, name} = await getFacebookUserData(req.body.code);
         try {
             const find = await User.findOne({email});
             if(find) {
-                const token = await user.generateAuthToken();
-                res.status(201).send({ user, token })
+                const token = await find.generateAuthToken();
+                res.status(201).send({ user: find, token })
             } else {
                 const user = new User({email, password, name});
                 await user.save()
@@ -89,7 +81,7 @@ router.get('/api/users/loginFB', async(req, res) => {
         catch (error) {
             res.status(400).send(error)
         }
-      }
+    }
 })
 router.get('/api/users/me', auth, async(req, res) => {
     // View logged in user profile

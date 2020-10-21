@@ -74,7 +74,6 @@ const getGoogleAccountFromCode = async (code) => {
     resourceName: "people/me",
     personFields: fields.join(',')
   })
-  console.log(user.data);
   const userGoogleId = user.data.etag;
   const userGoogleEmail = user.data.emailAddresses && user.data.emailAddresses.length && user.data.emailAddresses[0].value;
   const username = user.data.names && user.data.names.length && user.data.names[0].displayName;

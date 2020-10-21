@@ -20,12 +20,13 @@ module.exports = () => {
   },
   output: {
     path: path.join(__dirname, './public/dist'),
-    filename: '[name].[hash].js'
+    filename: '[name].[hash].js',
+    publicPath: '/',
   },
   plugins: [
     new webpack.HashedModuleIdsPlugin(),
     new webpack.DefinePlugin(envKeys),
-    new BundleAnalyzerPlugin(),
+    //new BundleAnalyzerPlugin(),
     new HtmlWebpackPlugin({
       inject: false,
       templateContent: ({htmlWebpackPlugin}) => `

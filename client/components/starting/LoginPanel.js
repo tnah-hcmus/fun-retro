@@ -1,6 +1,4 @@
 import React, {useState, useEffect} from 'react';
-//import { withRouter } from 'react-router-dom';
-import {connect} from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -11,7 +9,8 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Copyright from '../common/Copyright';
 import Typography from '@material-ui/core/Typography';
-import {startLogin, getGoogleUrl} from '../../action/auth/auth';
+
+
 const useStyles = makeStyles((theme) => ({
     form: {
       width: '100%', // Fix IE 11 issue.
@@ -28,8 +27,8 @@ const LoginPanel = (props) => {
     const [googleUrl, setGoogleUrl] = useState('#');
     const [error, setError] = useState(null);
     useEffect(() => {
-      getGoogleUrl(setGoogleUrl);
-    }, [])
+      props.getGoogleUrl().then((url) => setGoogleUrl(url))
+    }, []);
     const handleSubmitLogin = (e) => {
       e.preventDefault();
       const email = e.target.elements.email.value;
@@ -106,7 +105,7 @@ const LoginPanel = (props) => {
             </Link>
           </Grid>
           <Grid item>
-            <Link onClick = {props.toSignUp} variant="body2">
+            <Link onClick = {() => props.toSignUp()} variant="body2">
               {"Don't have an account? Sign Up"}
             </Link>
           </Grid>
@@ -118,7 +117,4 @@ const LoginPanel = (props) => {
     </>
     );
 }
-const mapDispatchToProps = {
-  login: startLogin
-}
-export default connect(null, mapDispatchToProps)(LoginPanel);
+export default LoginPanel;

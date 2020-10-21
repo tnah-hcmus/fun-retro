@@ -9,7 +9,7 @@ const getAccessTokenFromCode = async (code) => {
             params: {
               client_id: process.env.FB_APP_ID,
               client_secret: process.env.FB_APP_SECRET,
-              redirect_uri: 'http://localhost:3000/api/users/loginFB',
+              redirect_uri: process.env.FB_REDIRECT_URL,
               code,
             },
           });
