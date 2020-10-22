@@ -1,11 +1,14 @@
 import { combineReducers, createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-import authReducer from '../reducer/authReducer';
 import { persistStore, persistReducer } from 'redux-persist';
 import localForage from 'localforage';
+import authReducer from '../reducer/authReducer';
+import categoryReducer from '../reducer/categoryReducer';
+import taskReducer from '../reducer/taskReducer';
+import boardReducer from '../reducer/boardReducer';
 
 const _createUUID = () => {
-  let guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+  let guid = 'xxyxxyxx-xxxx-4xxx-yxxx-xxxxxxxxyxxx'.replace(/[xy]/g, (c) => {
   let r = Math.random() * 16 | 0,
   v = c == 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
@@ -16,9 +19,12 @@ const _createUUID = () => {
 //map reducer -> store
 const rootReducer = combineReducers({
   auth: authReducer,
+  category: categoryReducer,
+  task: taskReducer,
+  board: boardReducer
 });
 const localDB = localForage.createInstance({
-  name: "RVN-data"
+  name: "Retro-data"
 });
 
 const persistConfig = {

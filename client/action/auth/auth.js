@@ -1,4 +1,4 @@
-import {LOGIN, LOGOUT} from './type';
+import {LOGIN, LOGOUT} from './types';
 import Axios from 'axios';
 import * as queryString from 'query-string';
 export const login = (id, token) => ({
