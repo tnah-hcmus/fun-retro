@@ -6,12 +6,13 @@ import StartPage from '../components/starting/StartingTemplate';
 import LoadingLogin from '../components/starting/LoginWithThirdParty';
 import Copyright from '../components/common/Copyright';
 import NotFound from '../components/common/404';
+import Layout from '../components/layout/Layout.js'
 const PrivateRoutes = props => {
   console.log("test");
   if (props.isAuthenticated) {
     return (
       <Switch>
-            <Route path="/" component={Copyright} exact/>
+            <Route path="/" component={Layout} exact/>
             <Route path="/404" component={NotFound} />         
             <Redirect to="/404" />
       </Switch>

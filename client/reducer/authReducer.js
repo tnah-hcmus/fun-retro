@@ -1,4 +1,4 @@
-import {LOGIN, LOGOUT} from '../action/auth/types';
+import {LOGIN, LOGOUT} from '../actions/auth/types';
 export default (state = {}, action) => {
     switch (action.type) {
       case LOGIN:
