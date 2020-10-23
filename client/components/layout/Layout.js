@@ -5,7 +5,7 @@ import { HomeOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import LoginButton from '../common/button/LoginButton';
 import {connect} from 'react-redux';
-
+import Full from '../../Full';
 const useStyles = makeStyles(() => ({
     mainTitle: {
         flexGrow: 1,
@@ -39,6 +39,7 @@ const App = (props) => {
           <LoginButton user = {props.isAuthenticated}/>
         </Toolbar>
       </AppBar>
+      <Full/>
     </>
   );
 }

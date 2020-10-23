@@ -3,7 +3,6 @@ import thunk from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist';
 import localForage from 'localforage';
 import authReducer from '../reducer/authReducer';
-import categoryReducer from '../reducer/categoryReducer';
 import taskReducer from '../reducer/taskReducer';
 import boardReducer from '../reducer/boardReducer';
 
@@ -19,7 +18,6 @@ const _createUUID = () => {
 //map reducer -> store
 const rootReducer = combineReducers({
   auth: authReducer,
-  category: categoryReducer,
   task: taskReducer,
   board: boardReducer
 });
@@ -30,7 +28,7 @@ const localDB = localForage.createInstance({
 const persistConfig = {
   key: 'root',
   whitelist: ['auth'],
-  blacklist: [],
+  blacklist: ['task, board'],
   storage: localDB,
 }
 

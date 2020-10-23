@@ -1,24 +1,23 @@
 import { ADD_TASK, SET_TASK, REMOVE_TASK, UPDATE_TASK,  REMOVE_ALL_TASKS } from "./types";
-import database from '../../firebase/firebase';
-//Delete all tab
+//Delete all task
 export const deleteAll = () => ({
     type: REMOVE_ALL_TASKS
 });
-export const deleteAllWServer = () => {
+/*export const deleteAllWServer = () => {
   return (dispatch, getState) => {
     const id = getState().auth.id;
     return database.deleteData({path}).then(() => {
       dispatch(deleteAll());
     })
   }
-}
+}*/
 
-//Delete a tab
+//Delete a task
 export const deleteTask = (id, category) => ({
     type: REMOVE_TASK, 
     payload: {id: id, category: category}
   });
-export const deleteTaskWServer = (id, category) => {
+/*export const deleteTaskWServer = (id, category) => {
   return (dispatch, getState) => {
     const id = getState().auth.id;
     const path = `users/${id}/tabs/${id}`;
@@ -26,42 +25,56 @@ export const deleteTaskWServer = (id, category) => {
       dispatch(deleteTask(id, category));
     })
   }
-}
+}*/
 
-//Add a tab
-export const addTask = (tab) => {
+//Add a task
+/*export const addTask = (task) => {
   return (dispatch, getState) => {
     const id = getState().auth.id;
-    if(tab.id) {
-      const path = `users/${id}/tabs/${tab.id}`;
-      return database.setData({path, data: tab}).then(() => {
+    if(task.id) {
+      const path = `users/${id}/tabs/${task.id}`;
+      return database.setData({path, data: task}).then(() => {
         dispatch({
           type: ADD_TASK,
-          payload: tab
+          payload: task
         })
       })
     }
     else {
       const path = `users/${id}/tabs`;
-      return database.pushData({path, data: tab}).then((ref) => {
-        tab.id = ref;
+      return database.pushData({path, data: task}).then((ref) => {
+        task.id = ref;
         dispatch({
           type: ADD_TASK,
-          payload: tab
+          payload: task
         });
       })
     }
   }
+}*/
+export const addFakeTask = (task) => {
+  return (dispatch, getState) => {
+    const owner = getState().auth.id;
+    const id = Date.now();
+    dispatch({
+      type: ADD_TASK,
+      payload: {
+        ...task,
+        owner,
+        id
+      }
+    })
+    
+  }
 }
-
-//Update a tab
+//Update a task
 export const updateTask = (id, newInfo) => {
   return {
       type: UPDATE_TASK,
       payload: {id: id, info: newInfo}
   };
 }
-export const updateTaskWServer = (id, newInfo) => {
+/*export const updateTaskWServer = (id, newInfo) => {
   return (dispatch, getState) => {
     const id = getState().auth.id;
     const path = `users/${id}/tabs/${id}`;
@@ -69,16 +82,9 @@ export const updateTaskWServer = (id, newInfo) => {
       dispatch(updateTask(id, newInfo));
     })
   }
-}
+}*/
 
-//Update trans in a tab
-export const updateComments = (id,trans) => {
-  return {
-      type: UPDATE_COMMENTS,
-      payload: {id: id,trans: trans}
-  };
-}
-export const updateCommentsWServer = (id, trans) => {
+/*export const updateCommentsWServer = (id, trans) => {
   return (dispatch, getState) => {
     const id = getState().auth.id;
     const path = `users/${id}/tabs/${id}/trans`;
@@ -86,14 +92,14 @@ export const updateCommentsWServer = (id, trans) => {
       dispatch(updateComments(id, trans));
     })
   }
-}
+}*/
 
 //Init tabs
 export const setTasks = (tabs) => ({
   type: SET_TASK, 
   payload: {tabs}
 });
-export const startSetTasks = () => {
+/*export const startSetTasks = () => {
   return (dispatch, getState) => {
     const id = getState().auth.id;
     const path = `users/${id}/tabs`;
@@ -105,4 +111,4 @@ export const startSetTasks = () => {
       dispatch(setTasks(tabs));
     });
   };
-};
+};*/

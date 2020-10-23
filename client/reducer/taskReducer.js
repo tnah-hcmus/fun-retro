@@ -7,12 +7,7 @@ import {
     UPDATE_TASK,
   } from '../actions/task/types';
   
-  const INITIAL_STATE = [
-      {
-          id: 'id',
-          content: 'body',
-          category: 'hello'
-      }    
+  const INITIAL_STATE = [  
     ];
   export default (state = INITIAL_STATE, action) => {
     switch (action.type) {

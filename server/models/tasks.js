@@ -21,6 +21,15 @@ const taskSchema = mongoose.Schema({
             type: String,
             required: true,
             trim: true,
+        },
+        timestamp: {
+            type : Date, 
+            default: Date.now
+        },
+        owner: {
+            type: String,
+            required: true,
+            trim: true
         }
     }]
 })

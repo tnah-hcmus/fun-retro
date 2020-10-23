@@ -20,7 +20,7 @@ const PrivateRoutes = props => {
   } else {
     return (
         <Switch>
-            <Route path="/" component={StartPage} exact/>
+            <Route path="/" component={Layout} exact/>
             <Route path="/auth/google" component={LoadingLogin} />
             <Route path="/auth/facebook" component={LoadingLogin} />
             <Route path="/404" component={NotFound} />         
