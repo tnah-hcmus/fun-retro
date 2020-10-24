@@ -1,16 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 import { HomeOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
-import LoginButton from '../common/button/LoginButton';
+import SessionButton from '../common/button/SessionButton';
 import {connect} from 'react-redux';
-import Full from '../../Full';
+import {Link} from 'react-router-dom';
+import SettingsIcon from '@material-ui/icons/Settings';
+import {editNameWServer} from '../../actions/auth/auth';
+import TextDialog from '../common/dialog/TextDialog';
 const useStyles = makeStyles(() => ({
     mainTitle: {
         flexGrow: 1,
         color: 'white',
         cursor: 'pointer',
+        textDecoration: 'none'
     },
     homeButton: {
         flex: 1,
@@ -21,14 +24,12 @@ const useStyles = makeStyles(() => ({
 
 const App = (props) => {
   const classes = useStyles();
+  const [modal, setModal] = useState(false);
   return (
     <>
       <AppBar position="sticky">
         <Toolbar>
-          <IconButton color="inherit" aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography className = {classes.mainTitle} variant="h6" color="inherit">
+          <Typography className = {classes.mainTitle} variant="h6" color="inherit" component = {Link} to = '/'>
             Retrospected
           </Typography>
           <div className = {classes.homeButton}>
@@ -36,10 +37,15 @@ const App = (props) => {
               <HomeOutlined />
             </IconButton>
           </div>
-          <LoginButton user = {props.isAuthenticated}/>
+          <SessionButton user = {props.isAuthenticated}/>
+          {props.isAuthenticated && 
+          <IconButton>
+            <SettingsIcon fontSize = "large" style = {{color: 'white'}} onClick = {() => setModal(true)}/>
+          </IconButton>}          
         </Toolbar>
       </AppBar>
-      <Full/>
+      {props.children}
+      <TextDialog openStatus = {modal} handleClose = {() => setModal(false)} ifAccept = {props.editName}/>
     </>
   );
 }
@@ -50,5 +56,8 @@ const mapStateToProps = state => {
       isAuthenticated: !!state.auth.token
     };
   };
+const mapDispatchToProps = {
+  editName: editNameWServer
+}
   
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(App));

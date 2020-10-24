@@ -9,7 +9,7 @@ import SignUpPanel from './SignUpPanel';
 import LoginPanel from './LoginPanel';
 import {getFacebookUrl, startLogin, startSignUp, getGoogleUrl} from '../../actions/auth/auth';
 import {connect} from 'react-redux';
-
+import { withRouter } from 'react-router-dom';
 const facebookUrl = getFacebookUrl();
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +51,7 @@ const StartPage = (props) => {
           {panel 
            ? <LoginPanel
                facebookUrl = {facebookUrl}
+               history = {props.history}
                login = {props.startLogin}
                getGoogleUrl = {getGoogleUrl}
                toSignUp = {() => SetPanel(false)}
@@ -58,6 +59,7 @@ const StartPage = (props) => {
            : <SignUpPanel
                facebookUrl = {facebookUrl}
                signup = {props.startSignUp}
+               history = {props.history}
                getGoogleUrl = {getGoogleUrl}
                toLogin = {() => SetPanel(true)}
              />
@@ -70,4 +72,4 @@ const StartPage = (props) => {
 const mapDispatchToProps = {
   startLogin, startSignUp
 }
-export default connect(null, mapDispatchToProps)(StartPage);
+export default connect(null, mapDispatchToProps)(withRouter(StartPage));

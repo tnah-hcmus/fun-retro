@@ -30,7 +30,7 @@ const SignUpPanel = (props) => {
     const name = e.target.elements.fname.value.trim() + ' ' + e.target.elements.lname.value.trim();
     const password = e.target.elements.password.value.trim();
     const email = e.target.elements.email.value.trim();
-    props.signup({email, password, name}, setError);
+    props.signup({email, password, name}, setError, props.history);
   }  
   return (
       <>

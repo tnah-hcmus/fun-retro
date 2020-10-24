@@ -19,7 +19,7 @@ const _createUUID = () => {
 const rootReducer = combineReducers({
   auth: authReducer,
   task: taskReducer,
-  board: boardReducer
+  boards: boardReducer
 });
 const localDB = localForage.createInstance({
   name: "Retro-data"
@@ -28,7 +28,7 @@ const localDB = localForage.createInstance({
 const persistConfig = {
   key: 'root',
   whitelist: ['auth'],
-  blacklist: ['task, board'],
+  blacklist: [ 'task', 'boards'],
   storage: localDB,
 }
 

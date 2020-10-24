@@ -23,7 +23,7 @@ const useStyles = (color) => {
         divider: {
             marginTop: '3%',
             color: grey['A400'],
-            size: 15
+            height: 3
         },
         paper: {
             padding: theme.spacing(2),
@@ -32,7 +32,7 @@ const useStyles = (color) => {
         },
     }));
 }
-const Category = ({children, category}) => {
+const Category = ({children, category, boardId}) => {
   const [showAddTask, setAddTask] = useState(false);
   const {color, icon, name} = category;
   const classes = useStyles(color)();
@@ -55,8 +55,8 @@ const Category = ({children, category}) => {
             >
                 <AddCircleOutlineIcon fontSize = "large"/>
             </Button>
-            {(!!children || showAddTask) && <Divider variant="middle" className = {classes.divider} />}
-            {showAddTask && <TaskInput category = {category.id} hide = {() => setAddTask(false)}/>}
+            {(!!children.length || showAddTask) && <Divider variant="middle" className = {classes.divider} />}
+            {showAddTask && <TaskInput boardId = {boardId} category = {category.id} hide = {() => setAddTask(false)}/>}
             {children}
           </Paper>
     </Grid>

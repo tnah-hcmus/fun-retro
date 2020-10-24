@@ -20,6 +20,7 @@
     "googleapis": "^61.0.0",
     "jsonwebtoken": "^8.5.1",
     "localforage": "^1.9.0",
+    "moment": "^2.29.1",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.9",
     "path": "^0.12.7",

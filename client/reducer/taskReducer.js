@@ -14,17 +14,17 @@ import {
       case ADD_TASK:
             return [ ...state, action.payload];
       case SET_TASK:
-          return [...state,...action.payload.tasks];
+          return [...action.payload.tasks];
       case UPDATE_TASK:
             return state.map((item) => {
               if(item.id === action.payload.id){
-                return action.payload.info;
+                return {...action.payload.task};
               }
               return item;
             });
       case REMOVE_TASK:
           return state.filter((item) => {
-                    return item.id !== action.payload.id || item.category !== action.payload.category;
+            return item.id !== action.payload.id;
           });
       case REMOVE_ALL_TASKS_BY_CATEGORY:
             return state.filter((item) => {

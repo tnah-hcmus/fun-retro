@@ -9,26 +9,32 @@ const useStyles = makeStyles((theme) => ({
         border: '6px dashed',
         borderRadius: '5%',
         color: deepPurple[600],
-        width: 360,
-        height: 200,
+        width: 380,
+        height: 210,
         padding: '5% auto',
+        textAlign: 'center',
+        margin: '30px 50px'
       },
       buttonIcon: {
         width: 100,
         height: 100,
         color: deepPurple[600]
       },
+      typo: {
+        fontWeight: 'bold',
+        paddingBottom: '3%'
+      }
   }));
-const BoardItem = () => {
+const AddBoard = (props) => {
   const classes = useStyles();
   return (
     <Card className = {classes.card}>
         <CardContent>
-            <IconButton>
+            <IconButton onClick = {props.addBoard}>
                 <AddBoxIcon className = {classes.buttonIcon}/>
             </IconButton>
-            <Typography variant="h4">
-                {"Add"}
+            <Typography variant="h4" className = {classes.typo}>
+                {"Add board"}
             </Typography>
         </CardContent>
     </Card>
@@ -36,4 +42,4 @@ const BoardItem = () => {
 };
 
 
-export default BoardItem;
+export default AddBoard;

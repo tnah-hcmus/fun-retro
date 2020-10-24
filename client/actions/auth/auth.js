@@ -1,14 +1,32 @@
-import {LOGIN, LOGOUT} from './types';
+import {LOGIN, LOGOUT, EDIT_NAME} from './types';
 import Axios from 'axios';
 import * as queryString from 'query-string';
-export const login = (id, token) => ({
+export const login = (token, name) => ({
   type: LOGIN,
-  payload: {id, token}
+  payload: {token, name}
+});
+
+export const editName = (name) => ({
+  type: EDIT_NAME,
+  payload: {name}
 });
 
 export const logout = () => ({
   type: LOGOUT
 });
+
+export const editNameWServer = (name) => {
+  return (dispatch, getState) => {
+      const token = getState().auth.token;
+      Axios.post('/api/users/edit', {token, key: 'name', value: name})
+      .then((res) => {
+          dispatch(editName(name));
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+}
 
 export const getFacebookUrl = () => {
     const stringifiedParams = queryString.stringify({
@@ -31,12 +49,13 @@ export const getGoogleUrl = () => {
       console.log(e);
     });
 }
-export const startLogin = (email, password, setError) => {
+export const startLogin = (email, password, setError, history) => {
     return (dispatch, getState) => {
         Axios.post('/api/users/login', {email, password})
         .then((res) => {
             const {user, token} = res.data;
-            dispatch(login(user._id, token));
+            dispatch(login(token, user.name));
+            history.push('/')
         })
         .catch((e) => {
           console.log(e);
@@ -50,7 +69,7 @@ export const startLoginThirdParty = (path, code, history) => {
         Axios.post(`/api/users/login${path}`, {code})
         .then((res) => {
             const {user, token} = res.data;
-            dispatch(login(user._id, token));
+            dispatch(login(token, user.name));
             history.push('/')
         })
         .catch((e) => {
@@ -58,12 +77,13 @@ export const startLoginThirdParty = (path, code, history) => {
         });
     }
 }
-export const startSignUp = (data, setError) => {
+export const startSignUp = (data, setError, history) => {
   return (dispatch, getState) => {
       Axios.post('/api/users/signup', {...data})
       .then((res) => {
           const {user, token} = res.data;
-          dispatch(login(user._id, token));
+          dispatch(login(token, user.name));
+          history.push('/')
       })
       .catch((e) => {
         const error = e.response && e.response.data && e.response.data.error;

@@ -1,4 +1,14 @@
 import { ADD_TASK, SET_TASK, REMOVE_TASK, UPDATE_TASK,  REMOVE_ALL_TASKS } from "./types";
+import Axios from 'axios';
+
+const _createID = () => {
+  let gid = 'xyxxyx'.replace(/[xy]/g, (c) => {
+  let r = Math.random() * 16 | 0,
+  v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+  return gid;
+}
 //Delete all task
 export const deleteAll = () => ({
     type: REMOVE_ALL_TASKS
@@ -13,45 +23,39 @@ export const deleteAll = () => ({
 }*/
 
 //Delete a task
-export const deleteTask = (id, category) => ({
+export const deleteTask = (id) => ({
     type: REMOVE_TASK, 
-    payload: {id: id, category: category}
+    payload: {id}
   });
-/*export const deleteTaskWServer = (id, category) => {
+export const deleteTaskWServer = (id, boardId) => {
   return (dispatch, getState) => {
-    const id = getState().auth.id;
-    const path = `users/${id}/tabs/${id}`;
-    return database.deleteData({path}).then(() => {
-      dispatch(deleteTask(id, category));
+    const token = getState().auth.token;
+    return Axios.post('/api/task/delete', {token, boardId, id})
+    .then((res) => {
+      dispatch(deleteTask(id));
     })
+    .catch((e) => console.log(e));
   }
-}*/
+}
 
 //Add a task
-/*export const addTask = (task) => {
+export const addTask = (task) => ({
+  type: ADD_TASK, 
+  payload: task
+});
+export const addTaskWServer = (task, boardId) => {
+
   return (dispatch, getState) => {
-    const id = getState().auth.id;
-    if(task.id) {
-      const path = `users/${id}/tabs/${task.id}`;
-      return database.setData({path, data: task}).then(() => {
-        dispatch({
-          type: ADD_TASK,
-          payload: task
-        })
-      })
-    }
-    else {
-      const path = `users/${id}/tabs`;
-      return database.pushData({path, data: task}).then((ref) => {
-        task.id = ref;
-        dispatch({
-          type: ADD_TASK,
-          payload: task
-        });
-      })
-    }
+    task.owner = getState().auth.name || 'Người dùng ẩn danh';
+    task.id = _createID();
+    const token = getState().auth.token;
+    return Axios.post('/api/task/add', {token, boardId, task})
+          .then((res) => {
+            dispatch(addTask(task));
+          })
+          .catch((e) => console.log(e));
   }
-}*/
+}
 export const addFakeTask = (task) => {
   return (dispatch, getState) => {
     const owner = getState().auth.id;
@@ -71,44 +75,33 @@ export const addFakeTask = (task) => {
 export const updateTask = (id, newInfo) => {
   return {
       type: UPDATE_TASK,
-      payload: {id: id, info: newInfo}
+      payload: {id: id, task: newInfo}
   };
 }
-/*export const updateTaskWServer = (id, newInfo) => {
+export const updateTaskWServer = (id, boardId, newInfo) => {
   return (dispatch, getState) => {
-    const id = getState().auth.id;
-    const path = `users/${id}/tabs/${id}`;
-    return database.setData({path, data: newInfo}).then(() => {
-      dispatch(updateTask(id, newInfo));
-    })
+    const token = getState().auth.token;
+    return Axios.post('/api/task/update', {token, boardId, id, newTask: newInfo})
+          .then((success) => {
+            dispatch(updateTask(id, newInfo));
+          })
+          .catch((e) => console.log(e));
   }
-}*/
+}
 
-/*export const updateCommentsWServer = (id, trans) => {
-  return (dispatch, getState) => {
-    const id = getState().auth.id;
-    const path = `users/${id}/tabs/${id}/trans`;
-    return database.updateData({path, data: trans}).then(() => {
-      dispatch(updateComments(id, trans));
-    })
-  }
-}*/
 
-//Init tabs
-export const setTasks = (tabs) => ({
+//Init task
+export const setTasks = (tasks) => ({
   type: SET_TASK, 
-  payload: {tabs}
+  payload: {tasks}
 });
-/*export const startSetTasks = () => {
+export const startSetTasks = (boardId) => {
   return (dispatch, getState) => {
-    const id = getState().auth.id;
-    const path = `users/${id}/tabs`;
-    return database.readData({path}).then((snapshot) => {
-      let tabs = [];
-      if(snapshot) {
-        tabs = Object.keys(snapshot).map((key) => snapshot[key].id ? snapshot[key] : Object.assign(snapshot[key], {id: key}))
-      }
-      dispatch(setTasks(tabs));
-    });
-  };
-};*/
+    const token = getState().auth.token;
+    return Axios.post('/api/task/getByBoardId', {token, boardId})
+          .then((res) => {
+            dispatch(setTasks(res.data || []));
+          })
+          .catch((e) => {return new Error('Not your board')});
+  }
+}

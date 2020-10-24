@@ -1,12 +1,21 @@
 const express = require('express');
-const userRouter = require('./routers/user');
 const path = require('path');
-require('dotenv').config();
-
-const port = process.env.PORT;
-require('./db/db');
-require('./services/google-utils');
 const {urlGoogle} = require('./services/google-utils');
+
+const userRouter = require('./routers/user');
+const taskRouter = require('./routers/task');
+const boardRouter = require('./routers/board');
+const port = process.env.PORT;
+const router = express.Router();
+boardRouter(router);
+userRouter(router);
+taskRouter(router);
+
+
+
+require('dotenv').config();
+require('./db/db');
+
 
 
 
@@ -23,11 +32,12 @@ app.use(
 );
 app.use(express.json());
 
-app.use(userRouter);
+app.use(router)
+
 
 app.use((req, res, next) => {
     res.sendFile(path.join(__dirname, "../public/dist/index.html"));
-  });
+});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)

@@ -33,7 +33,7 @@ const LoginPanel = (props) => {
       e.preventDefault();
       const email = e.target.elements.email.value;
       const password = e.target.elements.password.value;
-      props.login(email, password, setError);
+      props.login(email, password, setError, props.history);
     }  
     return (
       <>

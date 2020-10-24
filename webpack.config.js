@@ -15,6 +15,7 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 module.exports = () => {
   return {
   mode: 'production',
+  devtool: 'source-map',
   entry: {
     main: './client/app.js'
   },
@@ -25,6 +26,10 @@ module.exports = () => {
   },
   plugins: [
     new webpack.HashedModuleIdsPlugin(),
+    new webpack.ContextReplacementPlugin(
+      /moment[\/\\]locale$/,
+      /vi/
+    ),
     new webpack.DefinePlugin(envKeys),
     //new BundleAnalyzerPlugin(),
     new HtmlWebpackPlugin({

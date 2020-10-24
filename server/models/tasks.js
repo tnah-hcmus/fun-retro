@@ -23,8 +23,7 @@ const taskSchema = mongoose.Schema({
             trim: true,
         },
         timestamp: {
-            type : Date, 
-            default: Date.now
+            type : String,
         },
         owner: {
             type: String,
@@ -33,6 +32,23 @@ const taskSchema = mongoose.Schema({
         }
     }]
 })
-const Tasks = mongoose.model('Task', taskSchema)
+taskSchema.statics.addTask = async (bid, task) => {
+    try{
+        const taskList = await Tasks.findOne({bid});
+        if(taskList) {
+            taskList.tasks = taskList.tasks.concat(task);
+            await taskList.save();     
+        }
+        else {
+            const list = new Tasks({bid, tasks: [{...task}]});
+            await list.save();
+        }
+    }
+    catch(e) {
+        console.log(e);
+    }
+
+}
+const Tasks = mongoose.model('Task', taskSchema);
 
 module.exports = Tasks;
