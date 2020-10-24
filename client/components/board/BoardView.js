@@ -9,10 +9,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import {connect} from 'react-redux';
 import { green } from '@material-ui/core/colors';
 import {updateBoardWServer} from '../../actions/board/action';
-import {startSetTasks} from '../../actions/task/action';
+import {startSetTasks, updateTaskWServer} from '../../actions/task/action';
 import Loading from '../common/LoadingPage';
 import Axios from 'axios';
-import { set } from 'mongoose';
+import { DragDropContext } from 'react-beautiful-dnd';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -54,6 +55,15 @@ const BoardView = (props) => {
     setBoardName(value);
     setAllowEdit(false);
   }
+  const onDragEnd = result => {
+    const {destination, source, draggableId} = result;
+    if(!destination) return;
+    if(source.droppableId !== destination.droppableId) {
+      let newTask = props.task.filter(item => item.id === draggableId)[0];
+      newTask.category = destination.droppableId;
+      props.updateTask(draggableId, id,  newTask);
+    }
+  }
   return (
     <div className={classes.root}>
       {init && !err
@@ -77,12 +87,14 @@ const BoardView = (props) => {
               />
           }
           </Grid>
-          {ListCategories.map((category) => 
-              <Category category = {category} boardId = {id}>
-                  {props.task.filter((task) => task.category === category.id)
-                            .map((task) => <Task task = {task} boardId = {id}/>)}
-              </Category>
-          )}
+          <DragDropContext onDragEnd = {onDragEnd}>
+            {ListCategories.map((category) => 
+                <Category category = {category} boardId = {id}>
+                    {props.task.filter((task) => task.category === category.id)
+                              .map((task, index) => <Task task = {task} index = {index} boardId = {id}/>)}
+                </Category>
+            )}
+          </DragDropContext>
       </Grid>
       :
       (!err 
@@ -102,6 +114,7 @@ const mapStateToProps = state => {
   };
 const mapDispatchToProps = {
     newName: (id, name) => updateBoardWServer(id, 'name', name),
-    setTask: startSetTasks
+    setTask: startSetTasks,
+    updateTask: updateTaskWServer
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BoardView);
