@@ -18,6 +18,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "googleapis": "^61.0.0",
+    "http": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "localforage": "^1.9.0",
     "moment": "^2.29.1",
@@ -33,6 +34,7 @@
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
+    "socket.io": "^2.3.0",
     "validator": "^13.1.17"
   },
   "devDependencies": {

@@ -87,4 +87,23 @@ module.exports = function(router) {
             res.status(400).send(error)
         }
     })
+    router.post('/api/task/updateAll', async (req, res) => {
+        // Create a new user
+        try {
+            const {token, boardId, newTaskList} = req.body;
+            const permission = await Board.checkPermission(boardId, token);
+            switch(permission) {
+                case permissionFlag.PUBLIC_BOARD: case permissionFlag.OWN_PRIVATE_BOARD:
+                    const task = await Tasks.findOne({bid: boardId});  
+                    task.tasks = newTaskList;
+                    await task.save();
+                    return res.status(201).send({success: 'Success set task'});
+                case permissionFlag.NOT_ACCEPT_USE_PRIVATE_BOARD:
+                    return res.status(401).send({error: 'Not your board'});
+            }
+        } 
+        catch (error) {
+            res.status(400).send(error)
+        }
+    })
 }

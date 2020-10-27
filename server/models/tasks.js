@@ -29,6 +29,9 @@ const taskSchema = mongoose.Schema({
             type: String,
             required: true,
             trim: true
+        },
+        position: {
+            type: Number
         }
     }]
 })

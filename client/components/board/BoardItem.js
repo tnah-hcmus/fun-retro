@@ -19,7 +19,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ConfirmDialog from '../common/dialog/ConfirmDialog';
-
+import InfoDialog from '../common/dialog/InfoDialog';
 const useStyles = makeStyles((theme) => ({
     card: {
       width: 340,
@@ -61,8 +61,10 @@ moment.locale('vi');
 const BoardItem = ({board, shareBoard, deleteBoard, protectBoard, newName}) => {
   const classes = useStyles();
   const [allowEdit, setAllowEdit] = useState(false);
-  const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [shareModal, setShareModal] = useState(false);
   const editRef = useRef();
+  const permissionContent = `Bạn đã chia sẻ board của bạn thành công khai, board này được chia sẻ với link: http://localhost:3000/board/${board.id}. Link đã được copy vào clipboard của bạn`;
   const handleEditBoardName = () => {
     const value = editRef.current.value;
     newName(board.id, value);
@@ -70,7 +72,7 @@ const BoardItem = ({board, shareBoard, deleteBoard, protectBoard, newName}) => {
   }
   const handleShareBoard = () => {
     shareBoard(board.id);
-    navigator.clipboard.writeText(`http://localhost:3000/board/${board.id}`).then(() => console.log('Copied'));
+    navigator.clipboard.writeText(`http://localhost:3000/board/${board.id}`).then(() => setShareModal(true));
   }
   return (
     <>
@@ -127,7 +129,8 @@ const BoardItem = ({board, shareBoard, deleteBoard, protectBoard, newName}) => {
               </div>
           </CardContent>      
       </Card>
-      <ConfirmDialog openStatus = {modal} handleClose = {() => setModal(false)} ifAccept = {() => deleteBoard(board.id)}/>
+      <ConfirmDialog openStatus = {deleteModal} handleClose = {() => setDeleteModal(false)} ifAccept = {() => deleteBoard(board.id)}/>
+      <InfoDialog openStatus = {shareModal} handleClose = {() => setShareModal(false)} content = {permissionContent}/>
     </>
   );
 };

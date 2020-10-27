@@ -4,6 +4,8 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { grey } from '@material-ui/core/colors';
 import TaskInput from '../task/TaskInput';
 import { Droppable } from 'react-beautiful-dnd';
+import {connect} from 'react-redux';
+import Task from '../task/Task';
 
 const useStyles = (color) => {
     return makeStyles((theme) => ({
@@ -34,36 +36,41 @@ const useStyles = (color) => {
         },
     }));
 }
-const Category = ({children, category, boardId}) => {
+const Category = ({tasks, category, boardId}) => {
   const [showAddTask, setAddTask] = useState(false);
   const {color, icon, name, id} = category;
   const classes = useStyles(color)();
   return (
     <Grid item xs={12} sm={4}>
-            <Droppable droppableId={id}>
-                {(provided) => (
-                    <Paper className={classes.paper} {...provided.droppableProps} innerRef={provided.innerRef}>
-                        <div className = {classes.avatarContainer}>
-                            <Avatar variant="rounded" className={classes.colored}>
-                                {icon}
-                            </Avatar>
-                            <Typography variant="h6" className = {classes.typo}>
-                                {name}
-                            </Typography>
-                        </div>
-                        <Button
-                        variant="contained"
-                        fullWidth = {true}
-                        className = {classes.colored}
-                        onClick = {() => setAddTask(true)}
-                        >
-                            <AddCircleOutlineIcon fontSize = "large"/>
-                        </Button>
-                        {(!!children.length || showAddTask) && <Divider variant="middle" className = {classes.divider} />}
-                        {showAddTask && <TaskInput boardId = {boardId} category = {category.id} hide = {() => setAddTask(false)}/>}
-                        {children}
-                        {provided.placeholder}
-                    </Paper>
+            <Droppable droppableId={id} isCombineEnabled>
+                {(provided, snapshot) => (
+                        <Paper
+                            className={classes.paper}
+                            {...provided.droppableProps} 
+                            ref={provided.innerRef}
+                            >
+                            <div className = {classes.avatarContainer}>
+                                <Avatar variant="rounded" className={classes.colored}>
+                                    {icon}
+                                </Avatar>
+                                <Typography variant="h6" className = {classes.typo}>
+                                    {name}
+                                </Typography>
+                            </div>
+                            <Button
+                            variant="contained"
+                            fullWidth = {true}
+                            className = {classes.colored}
+                            onClick = {() => setAddTask(true)}
+                            >
+                                <AddCircleOutlineIcon fontSize = "large"/>
+                            </Button>
+                            {(!!tasks.length || showAddTask) && <Divider variant="middle" className = {classes.divider} />}
+                            {showAddTask && <TaskInput boardId = {boardId} category = {id} hide = {() => setAddTask(false)}/>}
+                            {tasks.map((task, index) => <Task task = {task} index = {index} boardId = {boardId}/>)}
+                            {provided.placeholder}
+                        </Paper>
+
                 )}                
             </Droppable>
             
@@ -71,5 +78,4 @@ const Category = ({children, category, boardId}) => {
     </Grid>
   );
 }
-
 export default Category;

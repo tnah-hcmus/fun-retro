@@ -37,11 +37,14 @@ const Task = ({task, updateTask, deleteTask, boardId, index}) => {
     updateTask(task.id, boardId, task);
     setEdit(false);
   }
+  console.log(index);
+  console.log(task.id);
   return (
-    <Draggable draggableId = {task.id} index = {index}>
+    <Draggable draggableId = {task.id} index = {index} key = {task.id}>
     {(provided) => {
       return (
-      <Card className={classes.root} {...provided.dragHandleProps} {...provided.draggableProps} innerRef = {provided.innerRef}>
+        <div {...provided.dragHandleProps} {...provided.draggableProps} ref = {provided.innerRef}>
+        <Card className={classes.root}>
         <CardHeader
           action={
             <IconButton aria-label="settings">
@@ -80,6 +83,7 @@ const Task = ({task, updateTask, deleteTask, boardId, index}) => {
           </Typography>
         </CardActions>
       </Card>
+        </div>
     )}}
     </Draggable>
     

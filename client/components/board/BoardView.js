@@ -3,13 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import ListCategories from '../category/listCategories';
 import Category from '../category/Category';
-import Task from '../task/Task';
 import { Typography, IconButton, TextField } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import {connect} from 'react-redux';
 import { green } from '@material-ui/core/colors';
 import {updateBoardWServer} from '../../actions/board/action';
-import {startSetTasks, updateTaskWServer} from '../../actions/task/action';
+import {startSetTasks, setTaskWServer} from '../../actions/task/action';
 import Loading from '../common/LoadingPage';
 import Axios from 'axios';
 import { DragDropContext } from 'react-beautiful-dnd';
@@ -28,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
     color: green[600]
   }
 }));
+
+const sortFn = (a, b) => {
+  return a.position - b.position;
+};
 
 const BoardView = (props) => {
   const classes = useStyles();
@@ -57,14 +60,13 @@ const BoardView = (props) => {
   }
   const onDragEnd = result => {
     const {destination, source, draggableId} = result;
-    if(!destination) return;
-    if(source.droppableId !== destination.droppableId) {
-      let newTask = props.task.filter(item => item.id === draggableId)[0];
-      newTask.category = destination.droppableId;
-      props.updateTask(draggableId, id,  newTask);
-    }
+    if(!source || !destination) return;
+    const newTaskList = reorderTaskPosition(source, destination, draggableId, props.task);
+    console.log(newTaskList);
+    props.setTasks(id, newTaskList);
   }
   return (
+    <DragDropContext onDragEnd = {onDragEnd}>
     <div className={classes.root}>
       {init && !err
         ?
@@ -87,14 +89,9 @@ const BoardView = (props) => {
               />
           }
           </Grid>
-          <DragDropContext onDragEnd = {onDragEnd}>
             {ListCategories.map((category) => 
-                <Category category = {category} boardId = {id}>
-                    {props.task.filter((task) => task.category === category.id)
-                              .map((task, index) => <Task task = {task} index = {index} boardId = {id}/>)}
-                </Category>
+                <Category category = {category} boardId = {id} tasks = {props.task.filter((item) => item.category === category.id).sort(sortFn)}/>
             )}
-          </DragDropContext>
       </Grid>
       :
       (!err 
@@ -105,8 +102,56 @@ const BoardView = (props) => {
       }
 
     </div>
+    </DragDropContext>
   );
 }
+
+const reorderTaskPosition = (source, destination, dragId, taskList) => {
+  // moving card within same list
+  if (source.droppableId === destination.droppableId) {
+    return taskList.map((task) => {
+      if (task.category === destination.droppableId) {
+        if (task.position === source.index) {
+          task.position = destination.index;
+          return {...task};
+        }
+        if (
+          task.position < Math.min(source.index, destination.index) ||
+          task.position > Math.max(source.index, destination.index)
+        ) {
+          return {...task};
+        }
+        if (source.index < destination.index) {
+          task.position--;
+          return {...task};
+        }
+        task.position++;
+      }
+      return {...task};
+    });
+  }
+  // moving card between different lists
+  else {
+    return taskList.map((task) => {
+      if (task.id === dragId) {
+        task.category = destination.droppableId;
+        task.position = destination.index;
+      }
+      else if (task.category === source.droppableId) {
+        if (task.position > source.index) {
+          task.position--;
+        }
+      }
+      else if (task.category === destination.droppableId) {
+        if (task.position >= destination.index) {
+          task.position++;
+        }
+      }
+      return {...task};
+    })
+  };
+}
+
 const mapStateToProps = state => {
     return {
       task: state.task
@@ -115,6 +160,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     newName: (id, name) => updateBoardWServer(id, 'name', name),
     setTask: startSetTasks,
-    updateTask: updateTaskWServer
+    setTasks: setTaskWServer
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BoardView);

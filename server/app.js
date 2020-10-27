@@ -1,5 +1,9 @@
 const express = require('express');
 const path = require('path');
+
+require('dotenv').config();
+require('./db/db');
+
 const {urlGoogle} = require('./services/google-utils');
 
 const userRouter = require('./routers/user');
@@ -11,15 +15,15 @@ boardRouter(router);
 userRouter(router);
 taskRouter(router);
 
-
-
-require('dotenv').config();
-require('./db/db');
-
-
-
-
 const app = express();
+const server = require('http').createServer(app);
+const options = { /* ... */ };
+const io = require('socket.io')(server, options);
+
+io.on('connection', socket => { console.log('New user connect') });
+
+server.listen(process.env.WEBSOCKET_PORT);
+
 app.use(express.static(path.join(__dirname, "../public/dist")));
 app.get('/google/url', (req, res) => {
     res.send(urlGoogle())

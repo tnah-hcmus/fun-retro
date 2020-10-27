@@ -44,9 +44,9 @@ export const addTask = (task) => ({
   payload: task
 });
 export const addTaskWServer = (task, boardId) => {
-
   return (dispatch, getState) => {
     task.owner = getState().auth.name || 'Người dùng ẩn danh';
+    task.position = getState().task.filter((item) => item.category === task.category).length;
     task.id = _createID();
     const token = getState().auth.token;
     return Axios.post('/api/task/add', {token, boardId, task})
@@ -95,11 +95,23 @@ export const setTasks = (tasks) => ({
   type: SET_TASK, 
   payload: {tasks}
 });
+
+export const setTaskWServer = (boardId, newTaskList) => {
+  return (dispatch, getState) => {
+    dispatch(setTasks(newTaskList))
+    const token = getState().auth.token;
+    return Axios.post('/api/task/updateAll', {token, boardId, newTaskList})
+          .then((success) => {
+          })
+          .catch((e) => console.log(e));
+  }
+}
 export const startSetTasks = (boardId) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
     return Axios.post('/api/task/getByBoardId', {token, boardId})
           .then((res) => {
+            console.log(res);
             dispatch(setTasks(res.data || []));
           })
           .catch((e) => {return new Error('Not your board')});
