@@ -29,8 +29,6 @@ const Task = ({task, updateTask, deleteTask, boardId, index}) => {
     updateTask(task.id, boardId, task);
     setEdit(false);
   }
-  console.log(index);
-  console.log(task.id);
   return (
     <Draggable draggableId = {task.id} index = {index} key = {task.id}>
     {(provided) => {

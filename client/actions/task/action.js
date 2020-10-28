@@ -1,5 +1,6 @@
 import { ADD_TASK, SET_TASK, REMOVE_TASK, UPDATE_TASK,  REMOVE_ALL_TASKS } from "./types";
 import Axios from 'axios';
+import WS from '../../helper/socket';
 
 const _createID = () => {
   let gid = 'xyxxyx'.replace(/[xy]/g, (c) => {
@@ -30,6 +31,7 @@ export const deleteTask = (id) => ({
 export const deleteTaskWServer = (id, boardId) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
+    WS.deleteTask(id, boardId);
     return Axios.post('/api/task/delete', {token, boardId, id})
     .then((res) => {
       dispatch(deleteTask(id));
@@ -48,6 +50,7 @@ export const addTaskWServer = (task, boardId) => {
     task.owner = getState().auth.name || 'Người dùng ẩn danh';
     task.position = getState().task.filter((item) => item.category === task.category).length;
     task.id = _createID();
+    WS.addTask(task, boardId);
     const token = getState().auth.token;
     return Axios.post('/api/task/add', {token, boardId, task})
           .then((res) => {
@@ -81,6 +84,7 @@ export const updateTask = (id, newInfo) => {
 export const updateTaskWServer = (id, boardId, newInfo) => {
   return (dispatch, getState) => {
     const token = getState().auth.token;
+    WS.editTask(id, boardId, newInfo);
     return Axios.post('/api/task/update', {token, boardId, id, newTask: newInfo})
           .then((success) => {
             dispatch(updateTask(id, newInfo));
@@ -99,6 +103,7 @@ export const setTasks = (tasks) => ({
 export const setTaskWServer = (boardId, newTaskList) => {
   return (dispatch, getState) => {
     dispatch(setTasks(newTaskList))
+    WS.submitTaskList(newTaskList, boardId);
     const token = getState().auth.token;
     return Axios.post('/api/task/updateAll', {token, boardId, newTaskList})
           .then((success) => {

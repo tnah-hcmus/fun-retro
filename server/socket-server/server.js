@@ -1,11 +1,7 @@
 require('dotenv').config();
 module.exports = function(app) {
     //set up socket
-    const fs = require('fs');
-    const server = require('https').createServer({
-    key: fs.readFileSync('server/ssl/key.pem'),
-    cert: fs.readFileSync('server/ssl/cert.pem')
-    }, app);
+    const server = require('http').createServer(app);
     const options = { origins: '*:*'};
     const io = require('socket.io')(server, options);
     let boardPool = {};
@@ -40,8 +36,49 @@ module.exports = function(app) {
             const {name, id} = data;
             if(boardPool[id]) {
                 for(const socketId of boardPool[id]) {
+                    if(socketId != socket.id) {
+                        socket.broadcast.to(socketId)
+                        .emit('receive-new-board-name', name);
+                    }
+                }
+            }            
+        });
+        
+        //on add task
+        socket.on('send-add-task-request', (data) => {
+            const {task, boardId} = data;
+            if(boardPool[boardId]) {
+                for(const socketId of boardPool[boardId]) {
+                    if(socketId != socket.id) {
                     socket.broadcast.to(socketId)
-                    .emit('receive-new-board-name', name);
+                    .emit('receive-add-task-request', task);
+                    }
+                }                
+            }            
+        });
+
+        //on delete task
+        socket.on('send-delete-task-request', (data) => {
+            const {id, boardId} = data;
+            if(boardPool[boardId]) {
+                for(const socketId of boardPool[boardId]) {
+                    if(socketId != socket.id) {
+                    socket.broadcast.to(socketId)
+                    .emit('receive-delete-task-request', id);
+                    }
+                }
+            }            
+        });
+
+        //on edit task
+        socket.on('send-edit-task-request', (data) => {
+            const {id, boardId, newInfo} = data;
+            if(boardPool[boardId]) {
+                for(const socketId of boardPool[boardId]) {
+                    if(socketId != socket.id) {
+                    socket.broadcast.to(socketId)
+                    .emit('receive-edit-task-request', {id, info: newInfo});
+                    }
                 }
             }            
         });

@@ -9,7 +9,7 @@ import {connect} from 'react-redux';
 import Axios from 'axios';
 
 import {updateBoardWServer} from '../../actions/board/action';
-import {startSetTasks, setTaskWServer, setTasks} from '../../actions/task/action';
+import {startSetTasks, setTaskWServer, setTasks, addTask, updateTask, deleteTask} from '../../actions/task/action';
 import Loading from '../common/LoadingPage';
 import WS from '../../helper/socket';
 import ListCategories from '../category/listCategories';
@@ -41,7 +41,6 @@ const BoardView = (props) => {
   const [init, setDone] = useState(false);
   const [err, setErr] = useState(false);
   const editRef = useRef();
-  const isFirstRun = useRef(true);
   const id = props.match.params.id;
   useEffect(() => {
     //set up data from server
@@ -61,17 +60,13 @@ const BoardView = (props) => {
     WS.connect(id);
     WS.startListenNewName(setBoardName);
     WS.startListenNewTask(props.setTasks);
+    WS.startListenAddTask(props.addTask);
+    WS.startListenDeleteTask(props.deleteTask);
+    WS.startListenEditTask(props.updateTask);
     return () => {
       WS.shutdownWS();
     }
   }, [])
-  useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-      return;
-    }
-    WS.submitTask(props.task, id);
-  }, [props.task])
   const handleEditBoardName = () => {
     const value = editRef.current.value;
     WS.submitName(value, id);
@@ -181,6 +176,6 @@ const mapDispatchToProps = {
     newName: (id, name) => updateBoardWServer(id, 'name', name),
     setTask: startSetTasks,
     setTaskWServer,
-    setTasks
+    setTasks, addTask, updateTask, deleteTask
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BoardView);
