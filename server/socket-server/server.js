@@ -1,12 +1,8 @@
 require('dotenv').config();
 module.exports = function(app) {
     //set up socket
-    const fs = require('fs');
-    const server = require('https').createServer({
-    key: fs.readFileSync('server/ssl/key.pem'),
-    cert: fs.readFileSync('server/ssl/cert.pem')
-    }, app);
-    const options = { };
+    const server = require('http').createServer(app);
+    const options = { origins: '*:*'};
     const io = require('socket.io')(server, options);
     let boardPool = {};
 
