@@ -90,7 +90,7 @@ const BoardItem = ({board, shareBoard, deleteBoard, protectBoard, newName}) => {
                     <IconButton className = {classes.lock} onClick = {() => protectBoard(board.id)}>
                       <LockIcon />
                     </IconButton>
-                    <IconButton className = {classes.delete} onClick = {() => setModal(true)}>
+                    <IconButton className = {classes.delete} onClick = {() => setDeleteModal(true)}>
                       <DeleteForever />
                     </IconButton>
                 </div>
