@@ -8,11 +8,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import {connect} from 'react-redux';
 import { green } from '@material-ui/core/colors';
 import {updateBoardWServer} from '../../actions/board/action';
-import {startSetTasks, setTaskWServer} from '../../actions/task/action';
+import {startSetTasks, setTaskWServer, setTasks} from '../../actions/task/action';
 import Loading from '../common/LoadingPage';
 import Axios from 'axios';
 import { DragDropContext } from 'react-beautiful-dnd';
-
+import WS from '../../helper/socket';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -39,11 +39,14 @@ const BoardView = (props) => {
   const [init, setDone] = useState(false);
   const [err, setErr] = useState(false);
   const editRef = useRef();
+  const isFirstRun = useRef(true);
   const id = props.match.params.id;
   useEffect(() => {
-    let promise = [];
-    promise.push(props.setTask(id));
-    promise.push(Axios.post('/api/boards/getNameById', {id}));
+    //set up data from server
+    let promise = [
+      props.setTask(id),
+      Axios.post('/api/boards/getNameById', {id})
+    ];
     Promise.all(promise)
     .then((res) => {
       if(res[0] instanceof Error) setErr(true);
@@ -51,9 +54,25 @@ const BoardView = (props) => {
       setDone(true);
     })
     .catch((e) => console.log(e));
+
+    //Set up WS server for real-time
+    WS.connect(id);
+    WS.startListenNewName(setBoardName);
+    WS.startListenNewTask(props.setTasks);
+    return () => {
+      WS.shutdownWS();
+    }
   }, [])
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+    WS.submitTask(props.task, id);
+  }, [props.task])
   const handleEditBoardName = () => {
     const value = editRef.current.value;
+    WS.submitName(value, id);
     props.newName(id, value);
     setBoardName(value);
     setAllowEdit(false);
@@ -62,8 +81,7 @@ const BoardView = (props) => {
     const {destination, source, draggableId} = result;
     if(!source || !destination) return;
     const newTaskList = reorderTaskPosition(source, destination, draggableId, props.task);
-    console.log(newTaskList);
-    props.setTasks(id, newTaskList);
+    props.setTaskWServer(id, newTaskList);
   }
   return (
     <DragDropContext onDragEnd = {onDragEnd}>
@@ -160,6 +178,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
     newName: (id, name) => updateBoardWServer(id, 'name', name),
     setTask: startSetTasks,
-    setTasks: setTaskWServer
+    setTaskWServer,
+    setTasks
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BoardView);

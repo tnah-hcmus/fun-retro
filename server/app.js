@@ -9,6 +9,7 @@ const {urlGoogle} = require('./services/google-utils');
 const userRouter = require('./routers/user');
 const taskRouter = require('./routers/task');
 const boardRouter = require('./routers/board');
+const WSServer = require('./socket-server/server');
 const port = process.env.PORT;
 const router = express.Router();
 boardRouter(router);
@@ -16,13 +17,9 @@ userRouter(router);
 taskRouter(router);
 
 const app = express();
-const server = require('http').createServer(app);
-const options = { /* ... */ };
-const io = require('socket.io')(server, options);
+WSServer(app);
 
-io.on('connection', socket => { console.log('New user connect') });
 
-server.listen(process.env.WEBSOCKET_PORT);
 
 app.use(express.static(path.join(__dirname, "../public/dist")));
 app.get('/google/url', (req, res) => {
