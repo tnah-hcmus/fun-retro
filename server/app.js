@@ -40,6 +40,6 @@ app.use((req, res, next) => {
     res.sendFile(path.join(__dirname, "../public/dist/index.html"));
 });
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`)
+app.listen(port || 3000, () => {
+    console.log(`Server is running on port ${port}`)
 })
