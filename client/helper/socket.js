@@ -6,7 +6,8 @@ class WSClient {
   }
   connect(boardId) {
     this.socket = io.connect('https://retro-1712039.herokuapp.com', {
-      query: "boardId=" + boardId
+      query: "boardId=" + boardId,
+      secure: true
     });
   }
   submitTaskList(task, boardId) {
