@@ -57,7 +57,7 @@ const BoardItem = ({board, shareBoard, deleteBoard, protectBoard, newName}) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
   const editRef = useRef();
-  const permissionContent = `Bạn đã chia sẻ board của bạn thành công khai, board này được chia sẻ với link: http://localhost:3000/board/${board.id}. Link đã được copy vào clipboard của bạn`;
+  const permissionContent = `Bạn đã chia sẻ board của bạn thành công khai, board này được chia sẻ với link: https://retro-1712039.herokuapp.com/board/${board.id}. Link đã được copy vào clipboard của bạn`;
   const handleEditBoardName = () => {
     const value = editRef.current.value;
     newName(board.id, value);
@@ -65,7 +65,7 @@ const BoardItem = ({board, shareBoard, deleteBoard, protectBoard, newName}) => {
   }
   const handleShareBoard = () => {
     shareBoard(board.id);
-    navigator.clipboard.writeText(`http://localhost:3000/board/${board.id}`).then(() => setShareModal(true));
+    navigator.clipboard.writeText(`https://retro-1712039.herokuapp.com/board/${board.id}`).then(() => setShareModal(true));
   }
   return (
     <>

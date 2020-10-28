@@ -5,7 +5,7 @@ class WSClient {
       this.socket = null;
   }
   connect(boardId) {
-    this.socket = io.connect('http://localhost:8000', {
+    this.socket = io.connect('https://retro-1712039.herokuapp.com:8000', {
       query: "boardId=" + boardId
     });
   }
