@@ -12,6 +12,7 @@ module.exports = function(app) {
         const boardId = socket.handshake.query.boardId;
         if(!boardPool[boardId] && !Array.isArray(boardPool[boardId] )) boardPool[boardId] = [socket.id]
         else boardPool[boardId].push(socket.id);
+        console.log(pool);
 
         //on disconnect
         socket.on('disconnect', () => {      
@@ -22,6 +23,7 @@ module.exports = function(app) {
         //on new taskList
         socket.on('send-new-task-list', (data) => {
             const {task, id} = data;
+            console.log(data);
             if(boardPool[id]) {
                 for(const socketId of boardPool[id]) {
                     if(socketId != socket.id) {
