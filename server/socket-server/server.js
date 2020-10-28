@@ -6,23 +6,15 @@ module.exports = function(app) {
     key: fs.readFileSync('server/ssl/key.pem'),
     cert: fs.readFileSync('server/ssl/cert.pem')
     }, app);
-    const options = { /* ... */ };
+    const options = { origins: '*:*'};
     const io = require('socket.io')(server, options);
     let boardPool = {};
-    io.origins((origin, callback) => {
-        console.log(origin)
-        if (origin !== 'https://retro-1712039.herokuapp.com') {
-            return callback('origin not allowed', false);
-        }
-        callback(null, true);
-      });
 
     io.on('connection', socket => { 
         //on first connection     
         const boardId = socket.handshake.query.boardId;
         if(!boardPool[boardId] && !Array.isArray(boardPool[boardId] )) boardPool[boardId] = [socket.id]
         else boardPool[boardId].push(socket.id);
-        console.log(boardPool);
         //on disconnect
         socket.on('disconnect', () => {      
             const i = boardPool[boardId].indexOf(socket);
