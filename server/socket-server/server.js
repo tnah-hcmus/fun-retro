@@ -1,18 +1,26 @@
 require('dotenv').config();
-const Board = require('../models/board');
 module.exports = function(app) {
     //set up socket
-    const server = require('http').createServer(app);
+    const fs = require('fs');
+    const server = require('https').createServer({
+    key: fs.readFileSync('server/ssl/key.pem'),
+    cert: fs.readFileSync('server/ssl/cert.pem')
+    }, app);
     const options = { /* ... */ };
     const io = require('socket.io')(server, options);
     let boardPool = {};
+    io.origins((origin, callback) => {
+        if (origin !== 'https://retro-1712039.herokuapp.com') {
+            return callback('origin not allowed', false);
+        }
+        callback(null, true);
+      });
 
     io.on('connection', socket => { 
         //on first connection     
         const boardId = socket.handshake.query.boardId;
         if(!boardPool[boardId] && !Array.isArray(boardPool[boardId] )) boardPool[boardId] = [socket.id]
         else boardPool[boardId].push(socket.id);
-        console.log(pool);
 
         //on disconnect
         socket.on('disconnect', () => {      
@@ -23,7 +31,6 @@ module.exports = function(app) {
         //on new taskList
         socket.on('send-new-task-list', (data) => {
             const {task, id} = data;
-            console.log(data);
             if(boardPool[id]) {
                 for(const socketId of boardPool[id]) {
                     if(socketId != socket.id) {
