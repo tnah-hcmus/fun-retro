@@ -10,6 +10,7 @@ module.exports = function(app) {
     const io = require('socket.io')(server, options);
     let boardPool = {};
     io.origins((origin, callback) => {
+        console.log(origin)
         if (origin !== 'https://retro-1712039.herokuapp.com') {
             return callback('origin not allowed', false);
         }
