@@ -1,15 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import Copyright from '../common/Copyright';
-import Typography from '@material-ui/core/Typography';
+import {Button, TextField, FormControlLabel, Checkbox, Link, Box, Grid, Typography} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
 
+import Copyright from '../common/Copyright';
 
 const useStyles = makeStyles((theme) => ({
     form: {

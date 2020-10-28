@@ -111,7 +111,6 @@ export const startSetTasks = (boardId) => {
     const token = getState().auth.token;
     return Axios.post('/api/task/getByBoardId', {token, boardId})
           .then((res) => {
-            console.log(res);
             dispatch(setTasks(res.data || []));
           })
           .catch((e) => {return new Error('Not your board')});

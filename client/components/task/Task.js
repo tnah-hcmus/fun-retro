@@ -1,20 +1,12 @@
 import React, {useState, useRef} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {Card, CardHeader, CardContent, CardActions, Typography, IconButton, TextField}  from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import {Delete, Edit, MoreVert} from '@material-ui/icons';
+import {Draggable} from 'react-beautiful-dnd';
 import moment from 'moment';
 import {connect} from 'react-redux';
-import {deleteTaskWServer, updateTaskWServer} from '../../actions/task/action';
-import {Draggable} from 'react-beautiful-dnd';
 
+import {deleteTaskWServer, updateTaskWServer} from '../../actions/task/action';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,7 +40,7 @@ const Task = ({task, updateTask, deleteTask, boardId, index}) => {
         <CardHeader
           action={
             <IconButton aria-label="settings">
-              <MoreVertIcon />
+              <MoreVert />
             </IconButton>
           }
           title={moment(Number(task.timestamp)).fromNow()}
@@ -72,10 +64,10 @@ const Task = ({task, updateTask, deleteTask, boardId, index}) => {
         <CardActions disableSpacing className = {classes.typo}>
         <div>
           <IconButton onClick = {() => setEdit(true)}>
-              <EditIcon />
+              <Edit />
             </IconButton>
           <IconButton onClick = {() => deleteTask(task.id, boardId)}>
-            <DeleteIcon />
+            <Delete />
           </IconButton>
         </div>
           <Typography variant="body2" color="textSecondary" component="p">

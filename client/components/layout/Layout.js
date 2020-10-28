@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
-import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
-import { HomeOutlined } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
-import SessionButton from '../common/button/SessionButton';
+import { AppBar, Toolbar, IconButton, Typography} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import { HomeOutlined, Settings } from '@material-ui/icons';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import SettingsIcon from '@material-ui/icons/Settings';
+
+
+import SessionButton from '../common/button/SessionButton';
 import {editNameWServer} from '../../actions/auth/auth';
 import TextDialog from '../common/dialog/TextDialog';
+
 const useStyles = makeStyles(() => ({
     mainTitle: {
         flexGrow: 1,
@@ -40,7 +42,7 @@ const App = (props) => {
           <SessionButton user = {props.isAuthenticated}/>
           {props.isAuthenticated && 
           <IconButton>
-            <SettingsIcon fontSize = "large" style = {{color: 'white'}} onClick = {() => setModal(true)}/>
+            <Settings fontSize = "large" style = {{color: 'white'}} onClick = {() => setModal(true)}/>
           </IconButton>}          
         </Toolbar>
       </AppBar>

@@ -8,10 +8,8 @@ class WSClient {
     this.socket = io.connect('http://localhost:8000', {
       query: "boardId=" + boardId
     });
-    console.log(this.socket);
   }
   submitTask(task, boardId) {
-    console.log(this.socket)
     this.socket.emit('send-new-task-list', {task, id: boardId});
   }
 
@@ -20,7 +18,6 @@ class WSClient {
   }
   startListenNewTask(setTasks) {
     this.socket.on('receive-new-task-list', (data) => {
-      console.log(data);
       setTasks(data);
     });
   }

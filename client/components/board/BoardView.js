@@ -1,18 +1,20 @@
 import React, {useState, useRef, useEffect} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import ListCategories from '../category/listCategories';
-import Category from '../category/Category';
-import { Typography, IconButton, TextField } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import {connect} from 'react-redux';
+
+import { Typography, IconButton, TextField, Grid } from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
+import Edit from '@material-ui/icons/Edit';
+import { DragDropContext } from 'react-beautiful-dnd';
+import {connect} from 'react-redux';
+import Axios from 'axios';
+
 import {updateBoardWServer} from '../../actions/board/action';
 import {startSetTasks, setTaskWServer, setTasks} from '../../actions/task/action';
 import Loading from '../common/LoadingPage';
-import Axios from 'axios';
-import { DragDropContext } from 'react-beautiful-dnd';
 import WS from '../../helper/socket';
+import ListCategories from '../category/listCategories';
+import Category from '../category/Category';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -94,7 +96,7 @@ const BoardView = (props) => {
             ? <Typography variant = "h3" align = "center" >
                   {boardName}
                   <IconButton onClick = {() => setAllowEdit(true)}>
-                      <EditIcon fontSize = "large" className = {classes.icon}/>
+                      <Edit fontSize = "large" className = {classes.icon}/>
                   </IconButton>
               </Typography>
             :   <TextField

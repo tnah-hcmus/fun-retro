@@ -1,7 +1,8 @@
 import React from 'react';
 import { deepPurple } from '@material-ui/core/colors';
-import { makeStyles, Card, CardContent, Typography, IconButton } from '@material-ui/core';
-import AddBoxIcon from '@material-ui/icons/AddBox';
+import { Card, CardContent, Typography, IconButton } from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import {AddBox} from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
       card: {
@@ -31,7 +32,7 @@ const AddBoard = (props) => {
     <Card className = {classes.card}>
         <CardContent>
             <IconButton onClick = {props.addBoard}>
-                <AddBoxIcon className = {classes.buttonIcon}/>
+                <AddBox className = {classes.buttonIcon}/>
             </IconButton>
             <Typography variant="h4" className = {classes.typo}>
                 {"Add board"}

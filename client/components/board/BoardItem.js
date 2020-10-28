@@ -1,25 +1,18 @@
 import React, {useState, useRef} from 'react';
-import {
-  Card,
-  CardContent,
-  TextField,
-  Typography,
-  IconButton,
-} from '@material-ui/core';
-import { DeleteForever} from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
+import { Card,  CardContent,  TextField,  Typography,  IconButton } from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import { DeleteForever, Edit, Share, Lock, ExitToApp} from '@material-ui/icons';
 import { red, green, blue, grey } from '@material-ui/core/colors';
-import EditIcon from '@material-ui/icons/Edit'
-import ShareIcon from '@material-ui/icons/Share';
-import LockIcon from '@material-ui/icons/Lock';
-import moment from 'moment';
-import {PUBLIC_BOARD} from '../../actions/board/types';
-import {updateBoardWServer, deleteBoardWServer} from '../../actions/board/action';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import moment from 'moment';
+
+
+import {PUBLIC_BOARD} from '../../actions/board/types';
+import {updateBoardWServer, deleteBoardWServer} from '../../actions/board/action';
 import ConfirmDialog from '../common/dialog/ConfirmDialog';
 import InfoDialog from '../common/dialog/InfoDialog';
+
 const useStyles = makeStyles((theme) => ({
     card: {
       width: 340,
@@ -85,10 +78,10 @@ const BoardItem = ({board, shareBoard, deleteBoard, protectBoard, newName}) => {
                 </div>
                 <div className = {classes.button}>
                     <IconButton className = {classes.share} onClick = {handleShareBoard}>
-                      <ShareIcon />
+                      <Share />
                     </IconButton>
                     <IconButton className = {classes.lock} onClick = {() => protectBoard(board.id)}>
-                      <LockIcon />
+                      <Lock />
                     </IconButton>
                     <IconButton className = {classes.delete} onClick = {() => setDeleteModal(true)}>
                       <DeleteForever />
@@ -100,7 +93,7 @@ const BoardItem = ({board, shareBoard, deleteBoard, protectBoard, newName}) => {
               ? <Typography variant="h4" component="h2" style = {{marginTop: 20}}>
                   {board.name}
                   <IconButton className = {classes.edit} onClick = {() => setAllowEdit(true)}>
-                    <EditIcon />
+                    <Edit />
                   </IconButton>
                 </Typography>
               :   <TextField
@@ -123,7 +116,7 @@ const BoardItem = ({board, shareBoard, deleteBoard, protectBoard, newName}) => {
                 </div>
                 <div className = {classes.button}>
                     <IconButton className = {classes.share} component={Link} to={`/board/${board.id}`}>
-                      <ExitToAppIcon fontSize = "large" />
+                      <ExitToApp fontSize = "large" />
                     </IconButton>
                 </div>
               </div>

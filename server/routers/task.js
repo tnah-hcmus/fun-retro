@@ -30,7 +30,6 @@ module.exports = function(router) {
         try {
             const {token, boardId} = req.body;
             const permission = await Board.checkPermission(boardId, token);
-            console.log(permission);
             switch(permission) {
                 case permissionFlag.PUBLIC_BOARD: case permissionFlag.OWN_PRIVATE_BOARD:
                     const task = await Tasks.findOne({bid: boardId});  

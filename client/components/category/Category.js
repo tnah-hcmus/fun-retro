@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
-import { makeStyles, Button, Typography, Avatar, Paper, Grid, Divider } from '@material-ui/core';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { Button, Typography, Avatar, Paper, Grid, Divider } from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import { grey } from '@material-ui/core/colors';
-import TaskInput from '../task/TaskInput';
 import { Droppable } from 'react-beautiful-dnd';
-import {connect} from 'react-redux';
+
+
+import TaskInput from '../task/TaskInput';
 import Task from '../task/Task';
 
 const useStyles = (color) => {
@@ -63,7 +65,7 @@ const Category = ({tasks, category, boardId}) => {
                             className = {classes.colored}
                             onClick = {() => setAddTask(true)}
                             >
-                                <AddCircleOutlineIcon fontSize = "large"/>
+                                <AddCircleOutline fontSize = "large"/>
                             </Button>
                             {(!!tasks.length || showAddTask) && <Divider variant="middle" className = {classes.divider} />}
                             {showAddTask && <TaskInput boardId = {boardId} category = {id} hide = {() => setAddTask(false)}/>}

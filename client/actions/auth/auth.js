@@ -1,6 +1,7 @@
 import {LOGIN, LOGOUT, EDIT_NAME} from './types';
 import Axios from 'axios';
 import * as queryString from 'query-string';
+
 export const login = (token, name) => ({
   type: LOGIN,
   payload: {token, name}

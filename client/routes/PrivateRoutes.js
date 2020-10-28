@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import StartPage from '../components/starting/StartingTemplate';
 import LoadingLogin from '../components/starting/LoginWithThirdParty';
-import Copyright from '../components/common/Copyright';
 import ListBoard from '../components/board/ListBoard';
 import BoardView from '../components/board/BoardView';
 import NotFound from '../components/common/404';

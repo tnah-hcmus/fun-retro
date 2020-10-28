@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import BoardItem from './BoardItem';
 import { makeStyles } from '@material-ui/core/styles';
-import AddBoard from './AddBoard';
 import {connect} from 'react-redux';
+
+import BoardItem from './BoardItem';
+import AddBoard from './AddBoard';
 import {addBoardWServer, startSetBoards} from '../../actions/board/action';
 import Loading from '../common/LoadingPage';
 
@@ -20,6 +21,7 @@ const useStyles = makeStyles({
     flexWrap: 'wrap',
   },
 });
+
 const ListBoard = (props) => {
   const classes = useStyles();
   const [init, setDone] = useState(false);

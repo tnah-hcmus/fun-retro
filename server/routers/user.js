@@ -30,7 +30,7 @@ module.exports = function(router) {
         try {
             const { email, password } = req.body
             if(!email || !password) {
-                return res.status(400).send({error: 'Login failed, please fill your password and your email'})
+                return res.status(401).send({error: 'Login failed, please fill your password and your email'})
             }
             const user = await User.findByCredentials(email, password)
             if (!user) {
