@@ -10,7 +10,6 @@ const userRouter = require('./routers/user');
 const taskRouter = require('./routers/task');
 const boardRouter = require('./routers/board');
 const WSServer = require('./socket-server/server');
-const port = process.env.PORT;
 const router = express.Router();
 boardRouter(router);
 userRouter(router);
@@ -39,7 +38,3 @@ app.use(router)
 app.use((req, res, next) => {
     res.sendFile(path.join(__dirname, "../public/dist/index.html"));
 });
-
-app.listen(port || 3000, () => {
-    console.log(`Server is running on port ${port}`)
-})

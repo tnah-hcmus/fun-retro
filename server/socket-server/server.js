@@ -88,7 +88,7 @@ module.exports = function(app) {
             socket.disconnect(true);           
         });
     });
-    server.listen(process.env.WEBSOCKET_PORT);
+    server.listen(process.env.PORT);
 }   
 
 
