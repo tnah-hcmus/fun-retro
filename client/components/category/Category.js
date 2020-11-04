@@ -68,11 +68,10 @@ const Category = ({tasks, category, boardId}) => {
                                 <AddCircleOutline fontSize = "large"/>
                             </Button>
                             {(!!tasks.length || showAddTask) && <Divider variant="middle" className = {classes.divider} />}
-                            {showAddTask && <TaskInput boardId = {boardId} category = {id} hide = {() => setAddTask(false)}/>}
+                            {showAddTask && <TaskInput boardId = {boardId} category = {id} hide = {setAddTask}/>}
                             {tasks.map((task, index) => <Task task = {task} index = {index} boardId = {boardId}/>)}
                             {provided.placeholder}
                         </Paper>
-
                 )}                
             </Droppable>
             
@@ -80,4 +79,4 @@ const Category = ({tasks, category, boardId}) => {
     </Grid>
   );
 }
-export default Category;
+export default React.memo(Category);

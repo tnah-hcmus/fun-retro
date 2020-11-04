@@ -82,4 +82,4 @@ const Task = ({task, updateTask, deleteTask, boardId, index}) => {
 const mapDispatchToProps = {
   deleteTask: deleteTaskWServer, updateTask: updateTaskWServer
 }
-export default connect(null, mapDispatchToProps)(Task);
+export default connect(null, mapDispatchToProps)(React.memo(Task));

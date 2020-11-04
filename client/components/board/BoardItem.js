@@ -122,8 +122,8 @@ const BoardItem = ({board, shareBoard, deleteBoard, protectBoard, newName}) => {
               </div>
           </CardContent>      
       </Card>
-      <ConfirmDialog openStatus = {deleteModal} handleClose = {() => setDeleteModal(false)} ifAccept = {() => deleteBoard(board.id)}/>
-      <InfoDialog openStatus = {shareModal} handleClose = {() => setShareModal(false)} content = {permissionContent}/>
+      <ConfirmDialog openStatus = {deleteModal} handleClose = {setDeleteModal} ifAccept = {deleteBoard} boardId = {board.id} />
+      <InfoDialog openStatus = {shareModal} handleClose = {setDeleteModal} content = {permissionContent}/>
     </>
   );
 };
@@ -134,4 +134,4 @@ const mapDispatchToProps = {
   protectBoard: (id) => updateBoardWServer(id, 'protect'), 
   newName: (id, name) => updateBoardWServer(id, 'name', name)
 }
-export default connect(null, mapDispatchToProps)(BoardItem);
+export default connect(null, mapDispatchToProps)(React.memo(BoardItem));
