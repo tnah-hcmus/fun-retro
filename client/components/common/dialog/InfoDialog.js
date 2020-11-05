@@ -4,7 +4,7 @@ import {Dialog, Button, Typography, IconButton} from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import {Close} from '@material-ui/icons';
+import {Close, Flag} from '@material-ui/icons';
 
 
 const styles = (theme) => ({
@@ -49,8 +49,8 @@ const DialogActions = withStyles((theme) => ({
 
 const InfoDialogs = ({openStatus, handleClose, content}) => {
   return (
-      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={openStatus}>
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+      <Dialog onClose={() => handleClose(false)} aria-labelledby="customized-dialog-title" open={openStatus}>
+        <DialogTitle id="customized-dialog-title" onClose={() => handleClose(false)}>
           Thông báo
         </DialogTitle>
         <DialogContent dividers>
@@ -59,7 +59,7 @@ const InfoDialogs = ({openStatus, handleClose, content}) => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
+          <Button autoFocus onClick={() => handleClose(false)} color="primary">
             Đã biết
           </Button>
         </DialogActions>

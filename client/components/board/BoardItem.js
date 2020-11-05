@@ -123,7 +123,7 @@ const BoardItem = ({board, shareBoard, deleteBoard, protectBoard, newName}) => {
           </CardContent>      
       </Card>
       <ConfirmDialog openStatus = {deleteModal} handleClose = {setDeleteModal} ifAccept = {deleteBoard} boardId = {board.id} />
-      <InfoDialog openStatus = {shareModal} handleClose = {setDeleteModal} content = {permissionContent}/>
+      <InfoDialog openStatus = {shareModal} handleClose = {setShareModal} content = {permissionContent}/>
     </>
   );
 };
