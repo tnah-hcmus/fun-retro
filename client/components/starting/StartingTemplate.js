@@ -53,14 +53,14 @@ const StartPage = (props) => {
                history = {props.history}
                login = {props.startLogin}
                getGoogleUrl = {getGoogleUrl}
-               toSignUp = {() => SetPanel(false)}
+               toSignUp = {SetPanel}
              /> 
            : <SignUpPanel
                facebookUrl = {facebookUrl}
                signup = {props.startSignUp}
                history = {props.history}
                getGoogleUrl = {getGoogleUrl}
-               toLogin = {() => SetPanel(true)}
+               toLogin = {SetPanel}
              />
           }
         </div>
@@ -71,4 +71,4 @@ const StartPage = (props) => {
 const mapDispatchToProps = {
   startLogin, startSignUp
 }
-export default connect(null, mapDispatchToProps)(withRouter(StartPage));
+export default connect(null, mapDispatchToProps)(withRouter(React.memo(StartPage)));

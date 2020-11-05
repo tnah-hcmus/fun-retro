@@ -65,4 +65,4 @@ const mapDispatchToProps = {
   add: addBoardWServer,
   setBoard: startSetBoards
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ListBoard);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(ListBoard));

@@ -178,4 +178,4 @@ const mapDispatchToProps = {
     setTaskWServer,
     setTasks, addTask, updateTask, deleteTask
 }
-export default connect(mapStateToProps, mapDispatchToProps)(BoardView);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(BoardView));

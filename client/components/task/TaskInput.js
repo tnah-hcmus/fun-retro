@@ -17,7 +17,7 @@ const TaskInput = ({category, hide, addTask, boardId}) => {
   const textFieldRef = useRef();
   const addNewTask = () => {
     const content = textFieldRef.current.value;
-    hide();
+    hide(false);
     addTask({
         content,
         category,
@@ -49,4 +49,4 @@ const TaskInput = ({category, hide, addTask, boardId}) => {
 const mapDispatchToProps = {
   addTask: addTaskWServer
 }
-export default connect(null, mapDispatchToProps)(TaskInput);
+export default connect(null, mapDispatchToProps)(React.memo(TaskInput));

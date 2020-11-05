@@ -22,4 +22,4 @@ const LoadingLogin = (props) => {
 const mapDispatchToProps = {
   loginThirdParty: startLoginThirdParty,
 }
-export default connect(null, mapDispatchToProps)(withRouter(LoadingLogin));
+export default connect(null, mapDispatchToProps)(withRouter(React.memo(LoadingLogin)));

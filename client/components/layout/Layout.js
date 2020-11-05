@@ -47,7 +47,7 @@ const App = (props) => {
         </Toolbar>
       </AppBar>
       {props.children}
-      <TextDialog openStatus = {modal} handleClose = {() => setModal(false)} ifAccept = {props.editName}/>
+      <TextDialog openStatus = {modal} handleClose = {setModal} ifAccept = {props.editName}/>
     </>
   );
 }

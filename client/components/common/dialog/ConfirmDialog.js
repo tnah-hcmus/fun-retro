@@ -2,16 +2,16 @@ import React from 'react';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button} from '@material-ui/core';
 import {red} from '@material-ui/core/colors';
 
- const ConfirmDialog = ({openStatus, handleClose, ifAccept}) => {
+ const ConfirmDialog = ({openStatus, handleClose, ifAccept, boardId}) => {
   const acceptHandler = () => {
-    ifAccept();
-    handleClose();
+    ifAccept(boardId);
+    handleClose(false);
   }
   return (
     <div>
       <Dialog
         open={openStatus}
-        onClose={handleClose}
+        onClose={() => handleClose(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         style = {{color: red[700]}}
@@ -26,7 +26,7 @@ import {red} from '@material-ui/core/colors';
           <Button onClick={acceptHandler} color="primary">
             Thực hiện
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={() => handleClose(false)} color="primary" autoFocus>
             Hoàn tác
           </Button>
         </DialogActions>
@@ -34,4 +34,4 @@ import {red} from '@material-ui/core/colors';
     </div>
   );
 }
-export default ConfirmDialog;
+export default React.memo(ConfirmDialog);

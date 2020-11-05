@@ -66,4 +66,4 @@ const InfoDialogs = ({openStatus, handleClose, content}) => {
       </Dialog>
   );
 }
-export default InfoDialogs;
+export default React.memo(InfoDialogs);

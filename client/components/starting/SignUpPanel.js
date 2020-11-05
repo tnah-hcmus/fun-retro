@@ -115,7 +115,7 @@ const SignUpPanel = (props) => {
           </Typography>}
           <Grid container justify="flex-end">
             <Grid item>
-              <Link onClick = {() => props.toLogin()} variant="body2">
+              <Link onClick = {() => props.toLogin(true)} variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
@@ -127,4 +127,4 @@ const SignUpPanel = (props) => {
       </>
   );
 }
-export default SignUpPanel;
+export default React.memo(SignUpPanel);

@@ -98,7 +98,7 @@ const LoginPanel = (props) => {
             </Link>
           </Grid>
           <Grid item>
-            <Link onClick = {() => props.toSignUp()} variant="body2">
+            <Link onClick = {() => props.toSignUp(false)} variant="body2">
               {"Don't have an account? Sign Up"}
             </Link>
           </Grid>
@@ -110,4 +110,4 @@ const LoginPanel = (props) => {
     </>
     );
 }
-export default LoginPanel;
+export default React.memo(LoginPanel);

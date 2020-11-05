@@ -2,17 +2,17 @@ import React, {useRef} from 'react';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TextField} from '@material-ui/core';
 
 
- const EditDialog = ({openStatus, handleClose, ifAccept}) => {
+ const EditDialog = ({openStatus, handleClose, ifAccept, boardId}) => {
   const ref = useRef();
   const saveHandler = () => {
     if(ref.current.value) ifAccept(ref.current.value);
-    handleClose();
+    handleClose(false);
   }
   return (
     <div>
       <Dialog
         open={openStatus}
-        onClose={handleClose}
+        onClose={() => handleClose(false)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -36,7 +36,7 @@ import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Bu
           <Button onClick={saveHandler} color="primary">
             Lưu
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={() => handleClose(false)} color="primary" autoFocus>
             Huỷ
           </Button>
         </DialogActions>
@@ -44,4 +44,4 @@ import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Bu
     </div>
   );
 }
-export default EditDialog;
+export default React.memo(EditDialog);

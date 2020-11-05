@@ -43,4 +43,4 @@ const AddBoard = (props) => {
 };
 
 
-export default AddBoard;
+export default React.memo(AddBoard);

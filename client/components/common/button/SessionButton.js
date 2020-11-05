@@ -24,4 +24,4 @@ const SessionButton = (props) => {
 const mapDispatchToProps = {
   logout
 }
-export default connect(null, mapDispatchToProps)(withRouter(SessionButton));
+export default connect(null, mapDispatchToProps)(withRouter(React.memo(SessionButton)));
